@@ -4,10 +4,17 @@ using UnityEngine;
 
 namespace Blakes.Graph
 {
-    public class Connection : MonoBehaviour
+    [System.Serializable]
+    public class Connection
     {
         //Always two nodes
-        [SerializeField] protected Node nodeA;
-        [SerializeField] protected Node nodeB;
+        [SerializeField] public Node nodeA;
+        [SerializeField] public Node nodeB;
+    }
+
+    [System.Serializable]
+    public class Route
+    {
+        [SerializeField] public List<Node> nodes;
     }
 }
