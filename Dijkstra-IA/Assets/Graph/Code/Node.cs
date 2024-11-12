@@ -30,5 +30,14 @@ namespace Blakes.Graph
         }
 
         #endregion
+
+        #region Getters
+
+        public List<Connection> GetConnections 
+        {
+            get { return connections; }
+        }
+
+        #endregion
     }
 }

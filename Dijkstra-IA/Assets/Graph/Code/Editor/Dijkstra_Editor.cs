@@ -27,15 +27,15 @@ namespace Blakes.Graph
             _dijkstra = (Dijkstra)target;
             if(GUILayout.Button("1) Probe nodes"))
             {
-
+                _dijkstra.ProbeNodes();
             }
             if (GUILayout.Button("2) Create graph (by connecting the nodes)"))
             {
-
+                
             }
             if (GUILayout.Button("3) Calculate all routes (and the best route to destiny)"))
             {
-
+                _dijkstra.CalculateAllRoutes();
             }
             if (GUILayout.Button("Calculate all Dijkstra steps"))
             {
