@@ -40,5 +40,8 @@ namespace Blakes.Graph
         }
 
         #endregion
+
+        //TODO: Cambiarlo para que lo haga en el editor,
+        //podría intentar hacerlo dentro del script Dijkstra.
     }
 }
