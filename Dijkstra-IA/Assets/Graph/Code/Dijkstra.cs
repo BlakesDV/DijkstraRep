@@ -20,7 +20,9 @@ namespace Blakes.Graph
         #region Runtime Variables
 
         protected Route initialRoute;
-        protected List<Route> allRoutes;
+        [SerializeField] protected List<Route> allRoutes;
+        [SerializeField] protected List<Route> succesfulRoutes;
+        [SerializeField] protected Route ogRoute;
         //Succesful routes, truncated routes and faliled routes
 
         #endregion
@@ -30,7 +32,6 @@ namespace Blakes.Graph
         public void ProbeNodes()
         {
             //2  for (x,y)
-
             //instance go
             //go call function of the RaycastNode
         }
@@ -62,7 +63,7 @@ namespace Blakes.Graph
             }
             else
             {
-                //Validate the connections oh the actual node
+                //Validate the connections on the actual node
                 foreach (Connection connectionOfTheActualNode in actualNodeToExplore.GetConnections)
                 {
 
@@ -79,13 +80,18 @@ namespace Blakes.Graph
                                                  //Invocation to itself
                         ExploreBranchTree(newRoute, nextNode);
                     }
-                    else
-                    {
-                        //2) Further exploration in a branch of the tree
-                        //Invocation to itself
-                    }
                 }
                 //Break point of the method
+            }
+        }
+        public void SuccesfulRoutes()
+        {
+            foreach (Route routes in allRoutes) 
+            {
+                if (routes.ContainsNodeInRoute(finalNode)) 
+                {
+                    succesfulRoutes.Add(routes);
+                }
             }
         }
         #endregion

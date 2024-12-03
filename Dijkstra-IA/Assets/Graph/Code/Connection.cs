@@ -17,6 +17,7 @@ namespace Blakes.Graph
         [SerializeField] public float distanceBetweenNodes;
 
         #endregion
+
         #region Public Methods
 
         public Node RetreiveOtherNodeThan(Node value)
