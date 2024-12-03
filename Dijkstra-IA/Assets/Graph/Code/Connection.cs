@@ -69,6 +69,7 @@ namespace Blakes.Graph
             sumDistance = sumDistanceToCopy;
         }
 
+
         #endregion
 
         #region PublicMethods

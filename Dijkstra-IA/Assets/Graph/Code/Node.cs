@@ -36,6 +36,10 @@ namespace Blakes.Graph
 
         public void SumDistance()
         {
+            foreach (Connection connection in connections) {
+                connection.distanceBetweenNodes = Vector3.Distance(connection.nodeA.transform.position, connection.nodeB.transform.position);
+
+            }
             //TODO: Obtener la distancia entre nodos???
             //Connection connection = new Connection ();
             //connections[nodesFound].distanceBetweenNodes = Vector3.Distance(gameObject.transform.position , connection.nodeB.transform.position);

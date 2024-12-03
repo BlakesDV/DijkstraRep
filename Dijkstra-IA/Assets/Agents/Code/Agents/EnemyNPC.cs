@@ -119,7 +119,7 @@ namespace Blakes.FiniteStateMachine.Agents
 
             //Start the SUB STATE MACHINE (Patrol Script)
             currentPatrolScript = soPatrolScript.patrolScript[0];
-            if (soPatrolScript.patrolScript.Length <= 0)
+            if (soPatrolScript.patrolScript.Count <= 0)
             {
                 //The Level Designer didn't assign any patrols
                 //to the enemy
@@ -159,7 +159,7 @@ namespace Blakes.FiniteStateMachine.Agents
             //add one to the index, to jump to the next
             //element of the script
             currentPatrolIndex++;
-            if (currentPatrolIndex >= soPatrolScript.patrolScript.Length)
+            if (currentPatrolIndex >= soPatrolScript.patrolScript.Count)
             {
                 currentPatrolIndex = 0;
             }

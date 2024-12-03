@@ -33,17 +33,23 @@ namespace Blakes.Graph
             {
                 
             }
-            if (GUILayout.Button("3) Calculate all routes (and the best route to destiny)"))
+            if (GUILayout.Button("3) Calculate distance"))
+            {
+                _dijkstra.CalculateDistances();
+            }
+            if (GUILayout.Button("4) Calculate all routes (and the best route to destiny)"))
             {
                 _dijkstra.CalculateAllRoutes();
             }
+
+       
             if (GUILayout.Button("Calculate all Dijkstra steps"))
             {
-
+                _dijkstra.SetMovementOnScriptableObject();
             }
             if (GUILayout.Button("Clean all previous calculations"))
             {
-
+                _dijkstra.CleanAllUp();
             }
         }
 

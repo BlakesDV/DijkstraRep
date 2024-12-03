@@ -1,3 +1,5 @@
+using Blakes.FiniteStateMachine.Agents;
+using Blakes.FiniteStateMachine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -8,7 +10,7 @@ namespace Blakes.Graph
     public class Dijkstra : MonoBehaviour
     {
         #region References
-
+        [SerializeField] EnemyInteractiveScript_ScriptableObject enemyInteractiveScript;
         //Both will be obtained by calculating the lesser distance between Avatar vs all nodes and Goal vs all nodes
         [SerializeField] public Node initialNode;
         [SerializeField] public Node finalNode;
@@ -22,7 +24,7 @@ namespace Blakes.Graph
         protected Route initialRoute;
         [SerializeField] protected List<Route> allRoutes;
         [SerializeField] protected List<Route> succesfulRoutes;
-        [SerializeField] protected Route ogRoute;
+        [SerializeField] protected List<Route> ogRoute;
         //Succesful routes, truncated routes and faliled routes
 
         #endregion
@@ -90,8 +92,25 @@ namespace Blakes.Graph
                 //Break point of the method
             }
         }
+
+        public void CalculateDistances()
+        {
+            foreach(Node node in graph)
+            {
+                node.SumDistance();
+            }
+        }
+
+        //public void CalculateRouteSums()
+        //{
+        //    foreach (Route route in succesfulRoutes)
+        //    {
+        //        route.nodes
+        //    }
+        //}
         public void SuccesfulRoutes()
         {
+
             foreach (Route routes in allRoutes) 
             {
                 if (routes.ContainsNodeInRoute(finalNode)) 
@@ -102,14 +121,43 @@ namespace Blakes.Graph
         }
         public void OgRoute()
         {
-            foreach (Route routes in succesfulRoutes)
+            Route newRoute = new Route();
+            float OgRouteSum = 1000;
+
+            foreach (Route route in succesfulRoutes)
             {
-                if (routes.sumDistance < ogRoute.sumDistance)
+
+                if (route.sumDistance < OgRouteSum)
                 {
-                    ogRoute = routes;
+                    OgRouteSum = route.sumDistance;
+                    newRoute = route;
+                    ogRoute.Add(newRoute);
                 }
             }
         }
+
+
+        public void CleanAllUp()
+        {
+            allRoutes.Clear();
+            succesfulRoutes.Clear();
+            ogRoute.Clear();
+            enemyInteractiveScript.patrolScript.Clear();
+        }
+
+        public void SetMovementOnScriptableObject()
+        {
+            Route selectedRoute = ogRoute[0];
+            foreach (Node node in selectedRoute.nodes)
+            {
+                PatrolScript _patrolScript = new PatrolScript();
+                _patrolScript.actionToExecute = Actions.WALK;
+                _patrolScript.speedOrTime = 5f;
+                _patrolScript.destinyVector = node.transform.position;
+                enemyInteractiveScript.patrolScript.Add(_patrolScript);
+            }
+        }
+
         #endregion
     }
 }
