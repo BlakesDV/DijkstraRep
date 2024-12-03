@@ -11,6 +11,7 @@ namespace Blakes.Graph
 
         //0 to any connections
         [SerializeField] protected List<Connection> connections;
+        [SerializeField] protected int nodesFound;
 
         #endregion
 
@@ -27,6 +28,17 @@ namespace Blakes.Graph
                     0.016666666f
                     );
             }
+        }
+
+        #endregion
+
+        #region PublicMethods
+
+        public void SumDistance()
+        {
+            //TODO: Obtener la distancia entre nodos???
+            //Connection connection = new Connection ();
+            //connections[nodesFound].distanceBetweenNodes = Vector3.Distance(gameObject.transform.position , connection.nodeB.transform.position);
         }
 
         #endregion

@@ -34,6 +34,10 @@ namespace Blakes.Graph
             //2  for (x,y)
             //instance go
             //go call function of the RaycastNode
+            //foreach (Node node in graph)
+            //{
+            //    node.SumDistance();
+            //}
         }
 
         public void CalculateAllRoutes()
@@ -45,6 +49,8 @@ namespace Blakes.Graph
 
             //Recursive method
             ExploreBranchTree(initialRoute, initialNode);
+            SuccesfulRoutes();
+            OgRoute();
         }
 
         #endregion
@@ -91,6 +97,16 @@ namespace Blakes.Graph
                 if (routes.ContainsNodeInRoute(finalNode)) 
                 {
                     succesfulRoutes.Add(routes);
+                }
+            }
+        }
+        public void OgRoute()
+        {
+            foreach (Route routes in succesfulRoutes)
+            {
+                if (routes.sumDistance < ogRoute.sumDistance)
+                {
+                    ogRoute = routes;
                 }
             }
         }
