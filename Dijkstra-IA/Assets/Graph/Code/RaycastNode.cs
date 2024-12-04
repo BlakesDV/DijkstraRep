@@ -49,7 +49,8 @@ namespace Blakes.Dijkstra
                 {
                     //The raycast has detected something from the labyrinth, so this
                     //node has to be discarded to take part in the graph
-
+                    gameObject.SetActive(false);
+                    Debug.Log("sijalaoalgoasi");
                     //We do not have to continue to explore the for, since
                     //as one raycast found something from the labyrinth, this node is already discarde
                     break; //-> it stops the foreach

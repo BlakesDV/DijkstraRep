@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Blakes.Dijkstra;
+using UnityEngine.UIElements;
 
 namespace Blakes.Graph
 {
@@ -16,12 +18,16 @@ namespace Blakes.Graph
         [SerializeField] public Node finalNode;
         //The collection of all the nodes which every node containts multiple connections defines the graph
         [SerializeField] protected List<Node> graph;
+        [SerializeField] protected GameObject nodePrefab;
 
         #endregion
 
         #region Runtime Variables
 
         protected Route initialRoute;
+        [SerializeField] protected int width;
+        [SerializeField] protected int height;
+        [SerializeField] protected int spacing;
         [SerializeField] protected List<Route> allRoutes;
         [SerializeField] protected List<Route> succesfulRoutes;
         [SerializeField] protected List<Route> ogRoute;
@@ -40,6 +46,52 @@ namespace Blakes.Graph
             //{
             //    node.SumDistance();
             //}
+            int numeroDeNodo = 1;
+
+            for (int x = 0; x < height; x++)
+            {
+                for (int z = 0; z < width; z++)
+                {
+                    Vector3 spawnPosition = new Vector3(x * spacing, 0, z * spacing);
+
+                    GameObject nodeToPlace = Instantiate(nodePrefab, spawnPosition, Quaternion.identity);
+                    nodeToPlace.transform.parent = transform;
+                    graph.Add(nodeToPlace.GetComponent<Node>());
+                    nodeToPlace.GetComponent<RaycastNode>().RaycastToNode();
+                    nodeToPlace.gameObject.name = "Nodo " + numeroDeNodo;
+                    numeroDeNodo++;
+                }
+            }
+        }
+
+        public void CreateGraph()
+        {
+            foreach (Node actualNode in graph)
+            {
+                RaycastHit raycastHit;
+                foreach (Node nextNode in graph)
+                {
+                    if (actualNode == nextNode)
+                    {
+                        Debug.Log("Same Node " + actualNode.name);
+                    }
+                    else
+                    {
+                        if (Physics.Raycast(actualNode.transform.position, actualNode.transform.position - nextNode.transform.position, out raycastHit, 20f))
+                        {
+                            if (raycastHit.transform.gameObject.CompareTag("Node"))
+                            {
+                                Connection graphNodes = new Connection();
+                                graphNodes.nodeA = actualNode; //blakes
+                                graphNodes.nodeB = nextNode; //charlie
+                                graphNodes.distanceBetweenNodes = Vector3.Distance(graphNodes.nodeA.transform.position, graphNodes.nodeB.transform.position);
+                                actualNode.AddConnection(graphNodes);
+                                //connections.Add(ActualListOfNodes);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public void CalculateAllRoutes()
@@ -139,6 +191,11 @@ namespace Blakes.Graph
 
         public void CleanAllUp()
         {
+            foreach (Node node in graph)
+            {
+                DestroyImmediate(node.gameObject);
+            }
+            graph.Clear();
             allRoutes.Clear();
             succesfulRoutes.Clear();
             ogRoute.Clear();

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7907250288737449263}
   - component: {fileID: 1942351843925698531}
   - component: {fileID: 731211375424414009}
+  - component: {fileID: 297743497693547665}
   m_Layer: 0
   m_Name: Node
   m_TagString: Node
@@ -48,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connections: []
+  nodesFound: 0
 --- !u!33 &7907250288737449263
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -119,3 +121,22 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &297743497693547665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5245421002255118840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac46a6d2967fdfe4d8b42d6b6e0ed1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingPoints:
+  - {x: 2, y: 0, z: 0}
+  - {x: -2, y: 0, z: 0}
+  - {x: 0, y: 2, z: 0}
+  - {x: 0, y: -2, z: 0}
+  - {x: 0, y: 0, z: 2}
+  - {x: 0, y: 0, z: -2}

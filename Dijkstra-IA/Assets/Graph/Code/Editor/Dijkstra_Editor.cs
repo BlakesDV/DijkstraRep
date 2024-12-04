@@ -31,7 +31,7 @@ namespace Blakes.Graph
             }
             if (GUILayout.Button("2) Create graph (by connecting the nodes)"))
             {
-                
+                _dijkstra.CreateGraph();
             }
             if (GUILayout.Button("3) Calculate distance"))
             {

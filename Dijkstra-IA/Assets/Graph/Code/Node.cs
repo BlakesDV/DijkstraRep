@@ -19,8 +19,13 @@ namespace Blakes.Graph
 
         private void OnDrawGizmos()
         {
+            if (connections == null)
+            {
+                return;
+            }
             foreach (Connection connection in connections)
             {
+                //no dibujar las conexiones que no estan en la misma lista/repetidas
                 Debug.DrawLine(
                     connection.nodeA.transform.position,
                     connection.nodeB.transform.position,
@@ -36,13 +41,18 @@ namespace Blakes.Graph
 
         public void SumDistance()
         {
-            foreach (Connection connection in connections) {
+            foreach (Connection connection in connections) 
+            {
                 connection.distanceBetweenNodes = Vector3.Distance(connection.nodeA.transform.position, connection.nodeB.transform.position);
-
             }
             //TODO: Obtener la distancia entre nodos???
             //Connection connection = new Connection ();
             //connections[nodesFound].distanceBetweenNodes = Vector3.Distance(gameObject.transform.position , connection.nodeB.transform.position);
+        }
+
+        public void AddConnection(Connection ConnectionToMake)
+        {
+            connections.Add(ConnectionToMake);
         }
 
         #endregion
