@@ -41,9 +41,7 @@ namespace Blakes.Graph
             {
                 _dijkstra.CalculateAllRoutes();
             }
-
-       
-            if (GUILayout.Button("Calculate all Dijkstra steps"))
+            if (GUILayout.Button("Movement for SO"))
             {
                 _dijkstra.SetMovementOnScriptableObject();
             }

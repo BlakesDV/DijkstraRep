@@ -14,6 +14,10 @@ namespace Blakes.Graph
         #region References
         [SerializeField] EnemyInteractiveScript_ScriptableObject enemyInteractiveScript;
         //Both will be obtained by calculating the lesser distance between Avatar vs all nodes and Goal vs all nodes
+        [SerializeField] public Transform initialNodeTransform;
+        [SerializeField] public Transform finalNodeTransform;
+        [SerializeField] public GameObject prefabNPC;
+        [SerializeField] public EnemyInteractiveScript_ScriptableObject enemySO;
         [SerializeField] public Node initialNode;
         [SerializeField] public Node finalNode;
         //The collection of all the nodes which every node containts multiple connections defines the graph
@@ -30,7 +34,7 @@ namespace Blakes.Graph
         [SerializeField] protected int spacing;
         [SerializeField] protected List<Route> allRoutes;
         [SerializeField] protected List<Route> succesfulRoutes;
-        [SerializeField] protected List<Route> ogRoute;
+        [SerializeField] protected Route ogRoute;
         //Succesful routes, truncated routes and faliled routes
 
         #endregion
@@ -62,31 +66,41 @@ namespace Blakes.Graph
                     numeroDeNodo++;
                 }
             }
+            GameObject inNode = Instantiate(nodePrefab, initialNodeTransform.position, Quaternion.identity);
+            GameObject fnNode = Instantiate(nodePrefab, finalNodeTransform.position, Quaternion.identity);
+            initialNode = inNode.GetComponent<Node>();
+            finalNode = fnNode.GetComponent<Node>();
+            graph.Add(initialNode);
+            graph.Add(finalNode);
         }
 
         public void CreateGraph()
         {
-            foreach (Node actualNode in graph)
+            foreach (Node checkNode in graph)
             {
                 RaycastHit raycastHit;
-                foreach (Node nextNode in graph)
+                foreach (Node nodetoCheck in graph)
                 {
-                    if (actualNode == nextNode)
+                    if (checkNode == nodetoCheck)
                     {
-                        Debug.Log("Same Node " + actualNode.name);
+
                     }
                     else
                     {
-                        if (Physics.Raycast(actualNode.transform.position, actualNode.transform.position - nextNode.transform.position, out raycastHit, 20f))
+                        if (Physics.Raycast(checkNode.transform.position, nodetoCheck.transform.position - checkNode.transform.position, out raycastHit, 9f))
                         {
-                            if (raycastHit.transform.gameObject.CompareTag("Node"))
+                            if (raycastHit.transform.gameObject.CompareTag("Wall"))
+                            {
+
+                            }
+                            else
                             {
                                 Connection graphNodes = new Connection();
-                                graphNodes.nodeA = actualNode; //blakes
-                                graphNodes.nodeB = nextNode; //charlie
+                                graphNodes.nodeA = checkNode;
+                                graphNodes.nodeB = nodetoCheck;
                                 graphNodes.distanceBetweenNodes = Vector3.Distance(graphNodes.nodeA.transform.position, graphNodes.nodeB.transform.position);
-                                actualNode.AddConnection(graphNodes);
-                                //connections.Add(ActualListOfNodes);
+                                checkNode.AddConnection(graphNodes);
+                                //connections.Add(graphNodes);
                             }
                         }
                     }
@@ -147,7 +161,7 @@ namespace Blakes.Graph
 
         public void CalculateDistances()
         {
-            foreach(Node node in graph)
+            foreach (Node node in graph)
             {
                 node.SumDistance();
             }
@@ -163,9 +177,9 @@ namespace Blakes.Graph
         public void SuccesfulRoutes()
         {
 
-            foreach (Route routes in allRoutes) 
+            foreach (Route routes in allRoutes)
             {
-                if (routes.ContainsNodeInRoute(finalNode)) 
+                if (routes.ContainsNodeInRoute(finalNode))
                 {
                     succesfulRoutes.Add(routes);
                 }
@@ -173,7 +187,7 @@ namespace Blakes.Graph
         }
         public void OgRoute()
         {
-            Route newRoute = new Route();
+        
             float OgRouteSum = 1000;
 
             foreach (Route route in succesfulRoutes)
@@ -182,8 +196,7 @@ namespace Blakes.Graph
                 if (route.sumDistance < OgRouteSum)
                 {
                     OgRouteSum = route.sumDistance;
-                    newRoute = route;
-                    ogRoute.Add(newRoute);
+                    ogRoute = route;
                 }
             }
         }
@@ -198,21 +211,22 @@ namespace Blakes.Graph
             graph.Clear();
             allRoutes.Clear();
             succesfulRoutes.Clear();
-            ogRoute.Clear();
-            enemyInteractiveScript.patrolScript.Clear();
+            ogRoute = null;
+            enemySO.patrolScript.Clear();
         }
 
         public void SetMovementOnScriptableObject()
         {
-            Route selectedRoute = ogRoute[0];
+            Route selectedRoute = ogRoute;
             foreach (Node node in selectedRoute.nodes)
             {
                 PatrolScript _patrolScript = new PatrolScript();
                 _patrolScript.actionToExecute = Actions.WALK;
                 _patrolScript.speedOrTime = 5f;
                 _patrolScript.destinyVector = node.transform.position;
-                enemyInteractiveScript.patrolScript.Add(_patrolScript);
+                enemySO.patrolScript.Add(_patrolScript);
             }
+            prefabNPC.GetComponent<EnemyNPC>().soPatrolScript = enemySO;
         }
 
         #endregion
